@@ -200,68 +200,98 @@ will likely refine your design to make your implementation easier to use.
 
 > Please use this section to share your designs.
 
-- Component Design #1: <!-- TODO: give component a name then delete this comment -->
+- Component Design #1: ResourseTracker
   - **Description**:
-    - <!-- TODO: describe your component then delete this comment -->
+    - This component is designed to keep track of essential resources like food, water, or medical supplies. I thought of this component because I want to build tools that help support underprivileged communities and resource tracking is a basic but important part of that. This component would allow someone to monitor how much of each resource is available, use up supplies as they’re distributed and identify when things are running low. It could later be expanded to work as part of a larger aid or logistics system
   - **Kernel Methods**:
-    - <!-- TODO: list kernel methods then delete this comment -->
+    - void add(String resource, int amount): this adds a certain amount of the specified resorce
+    - int use(String resource, int amount): this uses a certain amount of the specified resource and if there aint enough, it just uses whats availible and returns the actual amount used
+    - int quantity(String resource):
+    this returns how much a specific resource is currently available
   - **Secondary Methods**:
-    - <!-- TODO: list secondary methods then delete this comment -->
-  - **Additional Considerations** (*note*: "I don't know" is an acceptable
-    answer for each of the following questions):
-    - Would this component be mutable? Answer and explain:
-      - <!-- TODO: provide an argument then delete this comment -->
-    - Would this component rely on any internal classes (e.g., `Map.Pair`)?
-      Answer and explain:
-      - <!-- TODO: provide an argument then delete this comment -->
-    - Would this component need any enums or constants (e.g.,
-      `Program.Instruction`)? Answer and explain:
-      - <!-- TODO: provide an argument then delete this comment -->
-    - Can you implement your secondary methods using your kernel methods?
-      Answer, explain, and give at least one example:
-      - <!-- TODO: provide an argument then delete this comment -->
+    - boolean isLow(String resource):
+    this checks whether the amount of the specified resource is below a critical level
+    - Set<String> resourseNeeded():
+    this returns a list of all the resources that are currently at or even below the critical level
+    - Void transferFrom(ResourceTracker other):
+    this takes all the resources from another tracker and adds them to this one
 
-- Component Design #2: <!-- TODO: give component a name then delete this comment -->
-  - **Description**:
-    - <!-- TODO: describe your component then delete this comment -->
-  - **Kernel Methods**:
-    - <!-- TODO: list kernel methods then delete this comment -->
-  - **Secondary Methods**:
-    - <!-- TODO: list secondary methods then delete this comment -->
-  - **Additional Considerations** (*note*: "I don't know" is an acceptable
-    answer for each of the following questions):
-    - Would this component be mutable? Answer and explain:
-      - <!-- TODO: provide an argument then delete this comment -->
-    - Would this component rely on any internal classes (e.g., `Map.Pair`)?
-      Answer and explain:
-      - <!-- TODO: provide an argument then delete this comment -->
-    - Would this component need any enums or constants (e.g.,
-      `Program.Instruction`)? Answer and explain:
-      - <!-- TODO: provide an argument then delete this comment -->
-    - Can you implement your secondary methods using your kernel methods?
-      Answer, explain, and give at least one example:
-      - <!-- TODO: provide an argument then delete this comment -->
 
-- Component Design #3: <!-- TODO: give component a name then delete this comment -->
-  - **Description**:
-    - <!-- TODO: describe your component then delete this comment -->
-  - **Kernel Methods**:
-    - <!-- TODO: list kernel methods then delete this comment -->
-  - **Secondary Methods**:
-    - <!-- TODO: list secondary methods then delete this comment -->
   - **Additional Considerations** (*note*: "I don't know" is an acceptable
     answer for each of the following questions):
     - Would this component be mutable? Answer and explain:
-      - <!-- TODO: provide an argument then delete this comment -->
+      - yes i think it would because resources can be added and used so the internal state is always changing
     - Would this component rely on any internal classes (e.g., `Map.Pair`)?
       Answer and explain:
-      - <!-- TODO: provide an argument then delete this comment -->
+      - id probably say it would because id probably use Map<String, Integer> to store the name and the amount of each resource
     - Would this component need any enums or constants (e.g.,
       `Program.Instruction`)? Answer and explain:
-      - <!-- TODO: provide an argument then delete this comment -->
+      - yes it would because itll help to have a constant for the critical level
     - Can you implement your secondary methods using your kernel methods?
       Answer, explain, and give at least one example:
-      - <!-- TODO: provide an argument then delete this comment -->
+      - id most likely edge to saying yes because for example, isLow(resource) just uses quantity(resource) and compares it to the threshold
+
+- Component Design #2: TextBuffer
+  - **Description**:
+    - what this component does is that it works like a simple text editor. It stores text, lets you add or remove characters, and move the cursor around. I chose this because text editing shows up in a lotta of apps, and it's a good way to practice handling string data.
+  - **Kernel Methods**:
+    - Void insert(String s):
+    this inserts the given string at the cursor position
+    - void delete(int n):
+    this deletes the next n characters starting from the cursor positions
+    - String get():
+    Returns the full text currently in the buffer
+
+  - **Secondary Methods**:
+    - boolean isEmpty():
+    this checks whether the buffer is currently empty
+    - Void replace(String old, String new):replaces all occurences of one string with another in the text
+    - String substring(int start, int end): this returns a portion of the buffer between the start and the end positions
+
+  - **Additional Considerations** (*note*: "I don't know" is an acceptable
+    answer for each of the following questions):
+    - Would this component be mutable? Answer and explain:
+      - yea i thini it would because inserting or getting rid of text does infact change what is stored
+    - Would this component rely on any internal classes (e.g., `Map.Pair`)?
+      Answer and explain:
+      - idk
+    - Would this component need any enums or constants (e.g.,
+      `Program.Instruction`)? Answer and explain:
+      - idk
+    - Can you implement your secondary methods using your kernel methods?
+      Answer, explain, and give at least one example:
+      - im not quite sure
+
+- Component Design #3: SimpleTimer
+  - **Description**:
+    - This component is a basic timer that can start, pause, reset and track time. I picked it because timers are useful in a lot of apps, like reminders and games.
+  - **Kernel Methods**:
+    - void start():
+    Starts or resumes the timer from where it left off
+    - void pause():
+    pauses the timer and keeps the current time
+    - void reset():
+    Stops the timer and resets the time back to zero
+    - int currentTime():
+    this retunes the number of secounds the timer has been running
+  - **Secondary Methods**:
+    - void countdown(int secounds):
+    starts a countdown from a given number of secounds
+    - boolean isTimeUp():
+    Returns true if the countdown has finished
+  - **Additional Considerations** (*note*: "I don't know" is an acceptable
+    answer for each of the following questions):
+    - Would this component be mutable? Answer and explain:
+      - i think so yes because the timers state and the trackking time constatnly change
+    - Would this component rely on any internal classes (e.g., `Map.Pair`)?
+      Answer and explain:
+      - no because it could use the system time
+    - Would this component need any enums or constants (e.g.,
+      `Program.Instruction`)? Answer and explain:
+      - idk
+    - Can you implement your secondary methods using your kernel methods?
+      Answer, explain, and give at least one example:
+      - idk
 
 ## Post-Assignment
 
