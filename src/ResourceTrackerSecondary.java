@@ -2,12 +2,12 @@ import java.util.HashSet;
 import java.util.Set;
 
 /**
- * Abstract class for ResourceTracker. Implements all enhanced methods using
- * only the kernel methods. Does not access internal fields.
+ * This abstract class adds extra features to ResourceTracker by using only the
+ * public methods from the kernel.
  *
  */
 public abstract class ResourceTrackerSecondary implements ResourceTracker {
-
+    // this is the amount where the resource is considered low
     private static final int CRITICAL_LEVEL = 10;
 
     @Override
@@ -25,7 +25,7 @@ public abstract class ResourceTrackerSecondary implements ResourceTracker {
         ResourceTracker copy = this.newInstance();
         copy.transferFrom(this);
 
-        // Now we can iterate over the copied tracker and find low resources
+        // Check each resource in the copy to see if it's low
         for (String res : this.getAllResources(copy)) {
             if (copy.quantity(res) <= CRITICAL_LEVEL) {
                 needed.add(res);
@@ -119,9 +119,6 @@ public abstract class ResourceTrackerSecondary implements ResourceTracker {
      * @return a set of resource names
      */
     private Set<String> getAllResources(ResourceTracker tracker) {
-        // This is a bit of a workaround, since kernel has no method to list keys
-        // In a real component, you’d probably expose keys with a method
-        // So for now, we simulate this using a convention
 
         Set<String> guessedResources = new HashSet<>();
         String[] common = { "Water", "Food", "Medicine", "Gas", "Clothes" };
