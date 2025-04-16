@@ -13,12 +13,12 @@ public class ResourceTracker {
         this.resources = new HashMap<>();
     }
 
-    public void add(String resource, int amount) {
+    public final void add(String resource, int amount) {
         this.resources.put(resource,
                 this.resources.getOrDefault(resource, 0) + amount);
     }
 
-    public int use(String resource, int amount) {
+    public final int use(String resource, int amount) {
         int currentAmount = this.resources.getOrDefault(resource, 0);
         int usedAmount = Math.min(amount, currentAmount);
         this.resources.put(resource, currentAmount - usedAmount);
@@ -26,17 +26,17 @@ public class ResourceTracker {
     }
 
     // this checks how much of a specific resource i have
-    public int quantity(String resource) {
+    public final int quantity(String resource) {
         return this.resources.getOrDefault(resource, 0);
     }
 
     // what this does is that it checks if the resorce is at critical level or if its low
-    public boolean isLow(String resource) {
+    public final boolean isLow(String resource) {
         return this.quantity(resource) <= CRITICAL_LEVEL;
     }
 
     // this is the list of all the reaources that are running low
-    public Set<String> resourcesNeeded() {
+    public final Set<String> resourcesNeeded() {
         Set<String> lowResources = new HashSet<>();
         for (String res : this.resources.keySet()) {
             if (this.isLow(res)) {
@@ -46,11 +46,12 @@ public class ResourceTracker {
         return lowResources;
     }
 
-    public void transferFrom(ResourceTracker other) {
-        for (Map.Entry<String, Integer> entry : other.resources.entrySet()) {
+    public final void transferFrom(ResourceTrackerSecondary blank) {
+        for (Map.Entry<String, Integer> entry : blank.resources.entrySet()) {
             this.add(entry.getKey(), entry.getValue());
         }
-        other.resources.clear();
+        Object resourceTrackerSecondary;
+        resourceTrackerSecondary.resources.clear();
     }
 
     public static void main(String[] args) {
@@ -85,6 +86,18 @@ public class ResourceTracker {
         System.out.println("After transfer, tracker1 Water: "
                 + tracker1.quantity("Water")); // 18
         System.out.println("tracker2 Water: " + tracker2.quantity("Water")); // 0
+    }
+
+    public final ResourceTracker newInstance() {
+
+        throw new UnsupportedOperationException(
+                "Unimplemented method 'newInstance'");
+    }
+
+    public final void transferFrom(ResourceTracker blank) {
+
+        throw new UnsupportedOperationException(
+                "Unimplemented method 'transferFrom'");
     }
 
 }
