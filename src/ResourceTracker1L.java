@@ -56,18 +56,18 @@ public final class ResourceTracker1L extends ResourceTrackerSecondary {
 
     // Copy resources from another tracker, and reset the other one
     @Override
-    public void transferFrom(ResourceTracker source) {
-        assert source != null;
-        assert source != this;
+    public void transferFrom(ResourceTracker1L t2) {
+        assert t2 != null;
+        assert t2 != this;
 
         this.clear();
-        for (String res : this.getAllResources(source)) {
-            this.add(res, source.quantity(res));
+        for (String res : this.getAllResources(t2)) {
+            this.add(res, t2.quantity(res));
         }
 
         // Reset the source tracker
-        ResourceTracker blank = source.newInstance();
-        source.transferFrom(blank);
+        ResourceTracker blank = t2.newInstance();
+        t2.transferFrom(blank);
     }
 
     // Helper: guesses which resource names are being tracked

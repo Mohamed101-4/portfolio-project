@@ -60,7 +60,7 @@ public abstract class ResourceTrackerSecondary implements ResourceTracker {
         return sb.toString();
     }
 
-    protected abstract void transferFrom(ResourceTracker copy);
+    protected abstract void transferFrom(ResourceTracker1L t2);
 
     // Object method using kernel-based comparison
     @Override
