@@ -1,10 +1,6 @@
 import java.util.HashSet;
 import java.util.Set;
 
-/**
- * This abstract class adds extra features to ResourceTracker by using only
- * public kernel methods.
- */
 public abstract class ResourceTrackerSecondary implements ResourceTracker {
 
     // Level where a resource is considered critically low
