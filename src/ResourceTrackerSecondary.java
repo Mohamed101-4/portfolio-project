@@ -2,14 +2,15 @@ import java.util.HashSet;
 import java.util.Set;
 
 /**
- * This abstract class adds extra features to ResourceTracker by using only the
- * public methods from the kernel.
- *
+ * This abstract class adds extra features to ResourceTracker by using only
+ * public kernel methods.
  */
 public abstract class ResourceTrackerSecondary implements ResourceTracker {
-    // this is the amount where the resource is considered low
+
+    // Level where a resource is considered critically low
     private static final int CRITICAL_LEVEL = 10;
 
+    // Secondary method layered on quantity
     @Override
     public final boolean isLow(String resource) {
         assert resource != null : "resource must not be null";
@@ -18,41 +19,27 @@ public abstract class ResourceTrackerSecondary implements ResourceTracker {
 
     protected abstract int quantity(String resource);
 
+    // Secondary method to list all low resources
     @Override
     public final Set<String> resourcesNeeded() {
         Set<String> needed = new HashSet<>();
-        // Create a copy of `this` to iterate without modifying the original
+
         ResourceTracker copy = this.newInstance();
         copy.transferFrom(this);
 
-        // Check each resource in the copy to see if it's low
         for (String res : this.getAllResources(copy)) {
             if (copy.quantity(res) <= CRITICAL_LEVEL) {
                 needed.add(res);
             }
         }
 
-        // Move everything back to original tracker
         this.transferFrom(copy);
-
         return needed;
     }
 
     protected abstract ResourceTracker newInstance();
 
-    @Override
-    public final void transferFrom(ResourceTracker other) {
-        assert other != null : "other must not be null";
-        assert other != this : "cannot transfer from self";
-
-        for (String res : this.getAllResources(other)) {
-            this.add(res, other.quantity(res));
-        }
-        // Clear the other tracker
-        ResourceTracker blank = other.newInstance();
-        other.transferFrom(blank);
-    }
-
+    // `toString` is a common Object method layered with kernel methods
     @Override
     public final String toString() {
         StringBuilder sb = new StringBuilder();
@@ -77,6 +64,9 @@ public abstract class ResourceTrackerSecondary implements ResourceTracker {
         return sb.toString();
     }
 
+    protected abstract void transferFrom(ResourceTracker copy);
+
+    // Object method using kernel-based comparison
     @Override
     public final boolean equals(Object obj) {
         if (!(obj instanceof ResourceTracker)) {
@@ -104,7 +94,6 @@ public abstract class ResourceTrackerSecondary implements ResourceTracker {
             }
         }
 
-        // Restore originals
         this.transferFrom(copyThis);
         other.transferFrom(copyOther);
 
@@ -112,21 +101,18 @@ public abstract class ResourceTrackerSecondary implements ResourceTracker {
     }
 
     /**
-     * Helper method to get all resource names from a tracker.
-     *
-     * @param tracker
-     *            the tracker to read from
-     * @return a set of resource names
+     * Helper method to guess all tracked resources. Can be adjusted later.
      */
     private Set<String> getAllResources(ResourceTracker tracker) {
-
         Set<String> guessedResources = new HashSet<>();
         String[] common = { "Water", "Food", "Medicine", "Gas", "Clothes" };
+
         for (String r : common) {
             if (tracker.quantity(r) > 0) {
                 guessedResources.add(r);
             }
         }
+
         return guessedResources;
     }
 }
